@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding Admin Panel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"/>
+  <style>
+    :root {
+      --primary-color: #ff69b4;
+      --secondary-color: #ffb6c1;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .stat-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    .coming-count { color: #28a745; }
+    .not-coming-count { color: #dc3545; }
+    .search-box { margin-bottom: 1.5rem; }
+    .action-btn { margin-right: 0.5rem; margin-bottom: 0.5rem; }
+    .guest-table {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .table th {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    .badge-attending { background-color: #28a745; }
+    .badge-not-attending { background-color: #dc3545; }
+    .real-time-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      font-size: 0.6rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <div class="dashboard-header d-flex justify-content-between align-items-center">
+    <h1><i class="bi bi-people-fill"></i> Wedding Guest Management</h1>
+    <div class="position-relative">
+      <button id="realtime-toggle" class="btn btn-light">
+        <i class="bi bi-arrow-repeat"></i> Real-time
+        <span id="realtime-badge" class="badge bg-danger real-time-badge d-none">ON</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3"><div class="stat-card text-center"><h3>Total Guests</h3><p id="total-count">0</p></div></div>
+    <div class="col-md-3"><div class="stat-card text-center"><h3>Attending</h3><p id="coming-count" class="coming-count">0</p></div></div>
+    <div class="col-md-3"><div class="stat-card text-center"><h3>Not Attending</h3><p id="not-coming-count" class="not-coming-count">0</p></div></div>
+    <div class="col-md-3"><div class="stat-card text-center"><h3>Total Persons</h3><p id="total-persons">0</p></div></div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="input-group search-box">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="text" id="search-input" class="form-control" placeholder="Search guests...">
+            <button class="btn btn-outline-secondary" type="button" id="clear-search">Clear</button>
+          </div>
+        </div>
+        <div class="col-md-6 text-end">
+          <button id="export-btn" class="btn btn-primary action-btn"><i class="bi bi-file-earmark-excel"></i> Export CSV</button>
+          <button id="print-btn" class="btn btn-secondary action-btn"><i class="bi bi-printer"></i> Print</button>
+          <button id="whatsapp-btn" class="btn btn-success action-btn"><i class="bi bi-whatsapp"></i> WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="table-responsive guest-table mt-4">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Status</th>
+              <th>Persons</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="guest-list"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./wedding-db.js"></script>
+<script>
+  let realtimeEnabled = false;
+  let refreshInterval;
+  const refreshRate = 5000;
+
+  document.addEventListener('DOMContentLoaded', async function () {
+    await loadGuestData();
+
+    document.getElementById('export-btn').addEventListener('click', exportToCSV);
+    document.getElementById('print-btn').addEventListener('click', printGuestList);
+    document.getElementById('whatsapp-btn').addEventListener('click', sendToWhatsApp);
+    document.getElementById('search-input').addEventListener('input', filterGuests);
+    document.getElementById('clear-search').addEventListener('click', clearSearch);
+    document.getElementById('realtime-toggle').addEventListener('click', function () {
+      toggleRealtime.call(this);
+    });
+  });
+
+  function toggleRealtime() {
+    realtimeEnabled = !realtimeEnabled;
+    const badge = document.getElementById('realtime-badge');
+
+    if (realtimeEnabled) {
+      badge.classList.remove('d-none');
+      refreshInterval = setInterval(loadGuestData, refreshRate);
+      this.classList.add('btn-success');
+      this.classList.remove('btn-light');
+      showToast('Real-time updates enabled', 'bg-success');
+    } else {
+      badge.classList.add('d-none');
+      clearInterval(refreshInterval);
+      this.classList.remove('btn-success');
+      this.classList.add('btn-light');
+      showToast('Real-time updates disabled', 'bg-warning');
+    }
+  }
+
+  async function loadGuestData() {
+    const guests = await WeddingDB.getAllGuests();
+
+    const stats = {
+      total: guests.length,
+      coming: guests.filter(g => g.attending === 'yes').length,
+      notComing: guests.filter(g => g.attending === 'no').length,
+      totalPersons: guests.filter(g => g.attending === 'yes').reduce((sum, g) => sum + parseInt(g.persons || 0), 0)
+    };
+
+    document.getElementById('total-count').textContent = stats.total;
+    document.getElementById('coming-count').textContent = stats.coming;
+    document.getElementById('not-coming-count').textContent = stats.notComing;
+    document.getElementById('total-persons').textContent = stats.totalPersons;
+
+    const tbody = document.getElementById('guest-list');
+    tbody.innerHTML = '';
+    guests.forEach(guest => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${guest.name}</td>
+        <td>${guest.mobile}</td>
+        <td>${guest.city}</td>
+        <td><span class="badge ${guest.attending === 'yes' ? 'badge-attending' : 'badge-not-attending'}">${guest.attending === 'yes' ? 'Attending' : 'Not Attending'}</span></td>
+        <td>${guest.persons}</td>
+        <td>${new Date(guest.timestamp).toLocaleString()}</td>
+        <td><button class="btn btn-sm btn-outline-danger delete-btn" data-id="${guest.id}"><i class="bi bi-trash"></i></button></td>`;
+      tbody.appendChild(row);
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        if (confirm('Are you sure you want to delete this guest?')) {
+          WeddingDB.deleteGuest(this.dataset.id).then(() => loadGuestData());
+        }
+      });
+    });
+  }
+
+  function filterGuests() {
+    const searchTerm = this.value.toLowerCase();
+    document.querySelectorAll('#guest-list tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(searchTerm) ? '' : 'none';
+    });
+  }
+
+  function clearSearch() {
+    document.getElementById('search-input').value = '';
+    filterGuests.call({ value: '' });
+  }
+
+  async function exportToCSV() {
+    const guests = await WeddingDB.getAllGuests();
+    const headers = ['Name', 'Phone', 'City', 'Status', 'Persons', 'Date'];
+    const rows = guests.map(g => [
+      `"${g.name}"`, g.mobile, `"${g.city}"`,
+      g.attending === 'yes' ? 'Attending' : 'Not Attending',
+      g.persons, new Date(g.timestamp).toLocaleString()
+    ]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wedding_guests.csv';
+    a.click();
+    showToast('CSV exported successfully', 'bg-success');
+  }
+
+  function printGuestList() {
+    const head = document.querySelector('.guest-table thead').outerHTML;
+    const body = document.querySelector('.guest-table tbody').outerHTML;
+    const html = `
+      <h1 class="text-center">Wedding Guest List</h1>
+      <p class="text-center">Printed on ${new Date().toLocaleString()}</p>
+      <table class="table">${head}${body}</table>
+    `;
+    const win = window.open('', '', 'width=800,height=600');
+    win.document.write(html);
+    win.document.close();
+    win.focus();
+    setTimeout(() => win.print(), 500);
+  }
+
+  async function sendToWhatsApp() {
+    const guests = await WeddingDB.getAllGuests();
+    const coming = guests.filter(g => g.attending === 'yes');
+    const msg = `Wedding Guest Summary:\n\nTotal Attending: ${coming.length}\nTotal Persons: ${coming.reduce((s, g) => s + parseInt(g.persons || 0), 0)}\n\n${coming.map(g => `- ${g.name} (${g.persons} persons)`).join('\n')}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  function showToast(msg, bgClass) {
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white ${bgClass} border-0 position-fixed bottom-0 end-0 m-3`;
+    toast.innerHTML = `<div class="d-flex"><div class="toast-body">${msg}</div><button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>`;
+    document.body.appendChild(toast);
+    new bootstrap.Toast(toast).show();
+    setTimeout(() => toast.remove(), 3000);
+  }
+</script>
+</body>
+</html>

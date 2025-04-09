@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation Rupanshi & Atul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <section class="countdown-section">
+        <div class="countdown-box fade-in">
+          <h2>💞 Countdown to Our Big Day</h2>
+          <div class="countdown-time" id="countdownBox"></div>
+        </div>
+      </section>
+      
+      
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>We Invite You</h1>
+            <h2>To Celebrate Our Wedding</h2>
+            <div class="countdown" id="countdown"></div>
+        </header>
+
+        <section class="couple-section">
+            <div class="bride">
+                <img src="images/gudi1.jpeg" alt="Bride">
+                <h2>Rupanshi</h2>
+            </div>
+            <div class="groom">
+                <img src="images/atul.jpeg" alt="Groom">
+                <h2>Atul</h2>
+            </div>
+        </section>
+
+        <section class="venue">
+            <h2>Wedding Venue</h2>
+            <div class="venue-details">
+                <h3>Gurukrupa Nivas</h3>
+                <p>Gopalnagar</p>
+                <p>Charadva</p>
+                <p>April 20, 2025 at 8:00 Am</p>
+            </div>
+        </section>
+
+
+        <section class="rsvp">
+            <h2>R&A</h2>
+            <form id="rsvpForm">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                    <small class="error-msg"></small>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="mobile" placeholder="Mobile Number (e.g. 123-456-7890)" required>
+                    <small class="error-msg"></small>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="city" placeholder="Your City" required>
+                    <small class="error-msg"></small>
+                </div>
+                <div class="form-group">
+                    <select id="attending" required>
+                        <option value="">Will you attend?</option>
+                        <option value="yes">Yes, I'll be there!</option>
+                        <option value="no">Sorry, can't make it</option>
+                    </select>
+                    <small class="error-msg"></small>
+                </div>
+                <div class="form-group">
+                    <select id="persons" required>
+                        <option value="">Number of Persons</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5+</option>
+                    </select>
+                    <small class="error-msg"></small>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+                <div class="success-msg" style="display:none">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                    <span>Thank you! We've received your RSVP</span>
+                </div>
+            </form>
+        </section>
+
+        <audio id="weddingMusic" loop>
+            <source src="audio/wd.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <button id="musicToggle" onclick="toggleMusic()">🔇</button>
+    </div>
+
+    <script src="https://maps.app.goo.gl/vQbPiZ3fjgEyoqNi7?g_st=com.google.maps.preview.copy" async defer></script>
+    <script src="script_final_autoplay_prompt.js"></script>
+    <script src="rsvp_final.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const countdownEl = document.getElementById('countdown');
+          const weddingDate = new Date('2025-04-20T08:00:00');
+      
+          function updateCountdown() {
+            const now = new Date();
+            const diff = weddingDate - now;
+      
+            if (diff <= 0) {
+              countdownEl.innerHTML = "🎉 It's Wedding Time!";
+              return;
+            }
+      
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+      
+            countdownEl.innerHTML = `
+              ⏳ ${days} Days ${hours} Hours ${minutes} Min ${seconds} Sec
+            `;
+          }
+      
+          updateCountdown();
+          setInterval(updateCountdown, 1000);
+        });
+      </script>
+          
+</body>
+</html>

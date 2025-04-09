@@ -1,0 +1,541 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('/images/backgroud.jpg') center/cover fixed;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    -webkit-text-size-adjust: 100%;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+}
+
+header {
+    text-align: center;
+    padding: 30px 0;
+    background: rgba(255, 182, 193, 0.9);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+    background-image: linear-gradient(135deg, rgba(255, 182, 193, 0.9), rgba(255, 192, 203, 0.9));
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 20px 0;
+        margin-bottom: 15px;
+    }
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+    opacity: 0.15;
+    z-index: -1;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header h2 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+@media (min-width: 768px) {
+    header h1 {
+        font-size: 4rem;
+    }
+    header h2 {
+        font-size: 2.8rem;
+    }
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+
+
+.couple-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+    text-align: center;
+    gap: 20px;
+}
+
+.bride, .groom {
+    width: 100%;
+    max-width: 300px;
+}
+
+.bride img, .groom img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid #ffb6c1;
+    transition: transform 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+@media (min-width: 768px) {
+    .couple-section {
+        flex-direction: row;
+        justify-content: space-around;
+        margin: 40px 0;
+    }
+    .bride, .groom {
+        width: 45%;
+    }
+    .bride img, .groom img {
+        width: 250px;
+        height: 250px;
+        border: 8px solid #ffb6c1;
+    }
+}
+
+.bride img::after, .groom img::after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.bride h3, .groom h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #ff69b4; /* Hot pink */
+    margin-top: 15px;
+}
+
+.bride img:hover, .groom img:hover {
+    transform: scale(1.05);
+}
+
+.venue {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.venue-details {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 2px solid #ff69b4; /* Hot pink */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    text-align: center;
+    color: #333;
+}
+
+.venue-details h3 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #ff69b4; /* Hot pink */
+    margin-bottom: 15px;
+}
+
+.venue-details p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.rsvp {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #ff69b4;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 768px) {
+    .rsvp {
+        padding: 40px;
+        margin: 40px 0;
+    }
+}
+
+.rsvp::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.rsvp h2 {
+    color: #ff69b4; /* Hot pink */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    font-family: 'Great Vibes', cursive;
+    position: relative;
+}
+
+.rsvp h2::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: #ff69b4; /* Hot pink */
+    margin: 10px auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    form {
+        gap: 10px;
+    }
+}
+
+input, select, textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+    input, select, textarea {
+        padding: 10px;
+    }
+}
+
+button {
+    padding: 14px 25px;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    button {
+        font-size: 1.1rem;
+        width: auto;
+        display: inline-block;
+    }
+}
+
+/* Simplified RSVP Form Styles */
+.form-group {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.error-msg {
+    color: #ff3860;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 0.25rem;
+    height: 1rem;
+}
+
+.success-msg {
+    background: rgba(46, 204, 113, 0.9);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.success-msg svg {
+    flex-shrink: 0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+/* Form input and select styles */
+input, select {
+    margin-bottom: 0.5rem;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 2px rgba(255,105,180,0.2);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+}
+
+button:hover {
+    background-color: #db7093; /* Darker pink */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+button:hover::after {
+    transform: translateX(0);
+}
+
+#musicToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Animation classes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 1.5s ease-in;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 1s ease-out;
+}
+
+
+
+/* ---------- Mobile Enhancements ---------- */
+@media (max-width: 768px) {
+  .dashboard-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .stat-card h3 {
+    font-size: 1rem;
+  }
+
+  .stat-card p {
+    font-size: 1.2rem;
+  }
+
+  .search-box {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-box input,
+  .search-box button {
+    width: 100%;
+  }
+
+  .action-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .guest-table {
+    font-size: 0.85rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  header h2 {
+    font-size: 1.2rem;
+  }
+
+
+
+  .couple-section {
+    gap: 12px;
+  }
+
+  .bride img,
+  .groom img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .venue-details p {
+    font-size: 1rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 0.95rem;
+  }
+
+  button.submit-btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  #musicToggle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    bottom: 15px;
+    right: 15px;
+  }
+}
+
+/* Countdown timer styling */
+#countdown {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ff69b4;
+    background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+    padding: 20px 30px;
+    border-radius: 40px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    animation: pulseCountdown 2s infinite;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Pulse animation for countdown */
+@keyframes pulseCountdown {
+    0% { transform: scale(1); box-shadow: 0 0 10px #ff69b4; }
+    50% { transform: scale(1.03); box-shadow: 0 0 20px #ff1493; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #ff69b4; }
+}
+
+/* Optional responsive tweak */
+@media (max-width: 480px) {
+    #countdown {
+        font-size: 1.4rem;
+        padding: 15px 20px;
+    }
+}
+/* Countdown styles */
+
+
+.countdown-section {
+    text-align: center;
+    margin: 50px 0;
+    padding: 40px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    color: #800080;
+    max-width: 90%;
+}
+
+/* Pulse animation */
+@keyframes pulseCountdown {
+    0% { transform: scale(1); box-shadow: 0 0 10px #ff69b4; }
+    50% { transform: scale(1.03); box-shadow: 0 0 20px #ff1493; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #ff69b4; }
+}
